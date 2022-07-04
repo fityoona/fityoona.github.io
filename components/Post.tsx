@@ -21,7 +21,7 @@ export default function Post({ imgUrl, vdoUrl, vdoType, desc }: PostType) {
             </div>
             {imgUrl &&
                 <div>
-                    <img src={imgUrl} className='rounded-3xl' />
+                    <img src={imgUrl} className='rounded-3xl' alt='post image' />
                 </div>
             }
             {vdoUrl &&
@@ -50,7 +50,7 @@ export default function Post({ imgUrl, vdoUrl, vdoType, desc }: PostType) {
             {
                 desc &&
                 <div className='flex px-2'>
-                    <img className='h-6 -mt-2 -mr-1' src='double-quotes.png' />
+                    <img className='h-6 -mt-2 -mr-1' src='double-quotes.png' alt='quote' />
                     <div className='text-xs text-gray-500 font-semibold'>
                         {desc}
                     </div>
