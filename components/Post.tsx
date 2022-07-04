@@ -13,8 +13,8 @@ export default function Post({ imgUrl, vdoUrl, vdoType }: PostType) {
             <div className='flex justify-center items-center p-4'>
                 <Avatar imgUrl='pic3.jpg' />
                 <div className='grow pl-4'>
-                    <div>Name</div>
-                    <div className='text-xs text-gray-500'>place</div>
+                    <div className='text-xs font-bold text-gray-600'>Yoona Sang-Sri-Ngam</div>
+                    <div className='text-xs text-gray-500'>A Gym</div>
                 </div>
                 <DotsHorizontalIcon className='h-6 cursor-pointer text-gray-500' />
             </div>
