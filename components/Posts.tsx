@@ -17,12 +17,11 @@ export default function Posts() {
                 postDocs.forEach((doc) => {
                     posts.push({ ...doc.data(), id: doc.id });
                 });
-                console.log(posts);
                 setPosts(posts);
             }
             getPosts();
         }
-    }, []);
+    }, [db]);
 
     const data = [
         {

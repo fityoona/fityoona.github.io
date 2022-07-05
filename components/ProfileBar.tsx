@@ -34,13 +34,13 @@ const handleTest = async (db: Firestore) => {
         {
             contentType: 'image/webp',
             content: 'pic2.webp',
-            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            desc: 'Good morning, Teacher',
             location: 'A Gym'
         },
         {
             contentType: 'video/mp4',
             content: 'clip1.mp4',
-            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            desc: 'who invented this ball!',
             location: 'A Gym'
         },
     ];

@@ -36,7 +36,8 @@ const FirebaseContextProvider = ({ children }: { children: React.ReactNode }) =>
             didRunRef.current = true;
 
             const auth = getAuth();
-            signInAnonymously(auth)
+            if (!auth.currentUser) {
+                signInAnonymously(auth)
                 .then(() => {
                     console.log('signInAnonymously', auth.currentUser);
                 })
@@ -45,6 +46,7 @@ const FirebaseContextProvider = ({ children }: { children: React.ReactNode }) =>
                     const errorMessage = error.message;
                     console.log(errorCode, errorMessage);
                 });
+            }
 
             onAuthStateChanged(auth, (user) => {
                 if (user) {
