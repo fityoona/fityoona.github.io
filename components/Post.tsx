@@ -1,32 +1,27 @@
 import Avatar from "./Avatar";
 import { DotsHorizontalIcon, HeartIcon, ChatAltIcon, ShareIcon, BookmarkIcon } from '@heroicons/react/solid';
+import { PostType } from "../db/post";
 
-type PostType = {
-    imgUrl?: string,
-    vdoUrl?: string,
-    vdoType?: string,
-    desc?: string
-}
-
-export default function Post({ imgUrl, vdoUrl, vdoType, desc }: PostType) {
+export default function Post({ contentType, content, desc, location, timestamp }: PostType) {
     return (
         <div className='break-inside bg-white rounded-[2.5rem] mb-8 pb-4'>
             <div className='flex justify-center items-center p-4'>
                 <Avatar imgUrl='pic3.jpg' />
                 <div className='grow pl-4'>
                     <div className='text-xs font-bold text-gray-600'>Yoona Sang-Sri-Ngam</div>
-                    <div className='text-xs text-gray-500'>A Gym</div>
+                    <div className='text-xs text-gray-500'>{location}</div>
                 </div>
                 <DotsHorizontalIcon className='h-6 cursor-pointer text-gray-500' />
             </div>
-            {imgUrl &&
+            {
+                contentType.split('/')[0] === 'image'
+                ?
                 <div>
-                    <img src={imgUrl} className='rounded-3xl' alt='post image' />
+                    <img src={content} className='rounded-3xl' alt='post image' />
                 </div>
-            }
-            {vdoUrl &&
+                :
                 <video controls className='rounded-3xl'>
-                    <source src={vdoUrl} type={vdoType} />
+                    <source src={content} type={contentType} />
                 </video>
             }
             <div className='flex justify-between p-4'>
@@ -57,7 +52,7 @@ export default function Post({ imgUrl, vdoUrl, vdoType, desc }: PostType) {
                 </div>
             }
             <div className='pt-3 pb-1 pl-7 text-xs text-gray-400 font-bold'>
-                Date
+                {timestamp && new Date(timestamp.toDate()).toLocaleString('en-uk', { weekday:"short", year:"numeric", month:"long", day:"numeric"})} 
             </div>
         </div>
     );

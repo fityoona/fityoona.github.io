@@ -1,45 +1,60 @@
+import { useContext, useEffect, useRef, useState } from 'react';
+import { FirebaseContext } from '../contexts/FirebaseContext';
+import { collection, getDocs, DocumentData } from 'firebase/firestore';
+
 import Post from "./Post";
 
-const data = [
-    {
-        contentType: 'image/jpeg',
-        imgUrl: 'running-with-corgi.jpg',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    },
-    {
-        contentType: 'image/webp',
-        imgUrl: 'pic1.webp',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    },
-    {
-        contentType: 'image/webp',
-        imgUrl: 'pic2.webp',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    },
-    {
-        contentType: 'video/mp4',
-        vdoUrl: 'clip1.mp4',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    },
-];
 export default function Posts() {
+    const { db } = useContext(FirebaseContext);
+    const didRunRef = useRef(false);
+    const [posts, setPosts] = useState<DocumentData[]>([]);
+    useEffect(() => {
+        if (didRunRef.current === false) {
+            didRunRef.current = true;
+            const posts: DocumentData[] = [];
+            const getPosts = async () => {
+                let postDocs = await getDocs(collection(db, "posts"));
+                postDocs.forEach((doc) => {
+                    posts.push({ ...doc.data(), id: doc.id });
+                });
+                console.log(posts);
+                setPosts(posts);
+            }
+            getPosts();
+        }
+    }, []);
+
+    const data = [
+        {
+            contentType: 'image/jpeg',
+            content: 'running-with-corgi.jpg',
+            desc: 'Go running with a corgi',
+            location: 'Shaolin Temple'
+        },
+    ];
+
     return (
         <div className="grow p-6 bg-gray-100 overflow-y-auto h-screen scrollbar-hide">
-            <div className='masonry sm:masonry-sm md:masonry-md'>
+            <div className='masonry-1 lg:masonry-2 xl:masonry-3'>
                 {
-                    data.map((item, id) =>
-                        item.imgUrl
-                            ?
-                            <Post key={`post-${id}`} imgUrl={item.imgUrl} desc={item.desc}/>
-                            :
-                            <Post key={`post-${id}`} vdoUrl={item.vdoUrl} vdoType={item.contentType} desc={item.desc} />
+                    data.map((item, id) => <Post key={`post-${id}`} 
+                                                contentType={item.contentType} 
+                                                content={item.content}
+                                                desc={item.desc}
+                                                location={item.location} 
+                                            />
                     )
                 }
-
-                <Post imgUrl='pic1.webp' />
-                <Post imgUrl='pic2.webp' />
-                <Post vdoUrl='clip1.mp4' vdoType='video/mp4' />
-
+                {
+                    posts.map((item) => <Post key={item.id} 
+                                            contentType={item.contentType} 
+                                            content={item.content}
+                                            desc={item.desc}
+                                            location={item.location}
+                                            timestamp={item.timestamp}
+                                        />
+                    )
+                }
             </div>
         </div>
     );

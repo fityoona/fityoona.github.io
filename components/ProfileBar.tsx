@@ -1,4 +1,11 @@
+import { useContext } from "react";
+import { FirebaseContext } from "../contexts/FirebaseContext";
+import { Firestore } from "firebase/firestore";
+import { addPost } from "../db/post";
+
 export default function ProfileBar() {
+    const { db } = useContext(FirebaseContext);
+
     return (
         <div className='flex flex-col items-center w-60 h-screen border-l pt-8 gap-4'>
             <div className='
@@ -10,6 +17,36 @@ export default function ProfileBar() {
 
             <div className='font-varela font-bold text-md text-gray-700'>Yoona Sang-Sri-Ngam</div>
             <div className='font-varela font-bold text-sm text-gray-500'>Bangkok, Thailand</div>
+
+            {/* <button className='bg-red-400 p-4' onClick={() => handleTest(db)}>Test</button> */}
         </div>
     );
+}
+
+const handleTest = async (db: Firestore) => {
+    const data = [
+        {
+            contentType: 'image/webp',
+            content: 'pic1.webp',
+            desc: 'Twin Look',
+            location: 'A Gym'
+        },
+        {
+            contentType: 'image/webp',
+            content: 'pic2.webp',
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            location: 'A Gym'
+        },
+        {
+            contentType: 'video/mp4',
+            content: 'clip1.mp4',
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            location: 'A Gym'
+        },
+    ];
+
+    data.forEach(async (item) => {
+        let res = await addPost(db, item);
+        console.log(res);
+    });
 }

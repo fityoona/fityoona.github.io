@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Yoona Go Fit</title>
+        <title>Yoona Goes Fit</title>
         <meta name="description" content="Yoona Fitness" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
