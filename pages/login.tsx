@@ -1,27 +1,30 @@
 import Head from "next/head";
 import { NextPage } from "next/types";
-import { getAuth, signInWithPopup, GithubAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GithubAuthProvider, linkWithCredential, linkWithPopup } from "firebase/auth";
 
 const Login: NextPage = () => {
     const handleGithub = () => {
         const auth = getAuth();
-        const provider = new GithubAuthProvider();
-        signInWithPopup(auth, provider)
-          .then((result) => {
-            const credential = GithubAuthProvider.credentialFromResult(result);
-            const token = credential?.accessToken;
-            const user = result.user;
-            
-            console.log(token, user);
-          }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+        if (auth.currentUser) {
+            if (auth.currentUser.isAnonymous) {
+                const provider = new GithubAuthProvider();
+                linkWithPopup(auth.currentUser, provider)
+                    .then((result) => {
+                        const credential = GithubAuthProvider.credentialFromResult(result);
+                        const token = credential?.accessToken;
+                        const user = result.user;
 
-            const email = error.customData.email;
-            const credential = GithubAuthProvider.credentialFromError(error);
+                    }).catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
 
-            console.log(errorCode, errorMessage, email, credential);
-          });
+                        const email = error.customData.email;
+                        const credential = GithubAuthProvider.credentialFromError(error);
+
+                        console.log(errorCode, errorMessage, email, credential);
+                    });
+            }
+        }
     }
 
     return (

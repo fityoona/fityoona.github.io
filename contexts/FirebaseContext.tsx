@@ -34,28 +34,27 @@ const FirebaseContextProvider = ({ children }: { children: React.ReactNode }) =>
     useEffect(() => {
         if (didRunRef.current === false) {
             didRunRef.current = true;
-
             const auth = getAuth();
-            if (!auth.currentUser) {
-                signInAnonymously(auth)
-                .then(() => {
-                    console.log('signInAnonymously', auth.currentUser);
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorCode, errorMessage);
-                });
-            }
 
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // User is signed in, see docs for a list of available properties
                     // https://firebase.google.com/docs/reference/js/firebase.User
                     const uid = user.uid;
-                    console.log('onAuthStateChanged-login', user);
+                    // console.log('onAuthStateChanged-logged-in', user);
                 } else {
-                    console.log('onAuthStateChanged-logout');
+                    // console.log('onAuthStateChanged-logout');
+                    if (!auth.currentUser) {
+                        signInAnonymously(auth)
+                        .then(() => {
+                            // console.log('signInAnonymously', auth.currentUser);
+                        })
+                        .catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            console.log(errorCode, errorMessage);
+                        });
+                    }
                 }
             });
         }
